@@ -1,4 +1,5 @@
 interface DateInfo {
+  [key: string]: string;
   /**
    * the year as "2023", "2024", etc
    */
@@ -69,7 +70,7 @@ interface DateInfo {
 /**
  * Format the date.
  * @param date
- * @param fotmatter
+ * @param formatter
  * @example
  *
  * const date = new Date() // Suppose it is 13:00:00.000 on December 12, 2023
@@ -79,10 +80,10 @@ interface DateInfo {
  * console.log(format(date, "yyyy/MM/dd"))  // 2023/12/12
  * console.log(format(date, dateInfo => dateInfo.SSS)   // 000
  */
-function format<T>(
+function format(
   date: Date,
-  fotmatter: string | ((dateInfo: DateInfo) => T)
-): string | T {
+  formatter: string | ((dateInfo: DateInfo) => string)
+): string {
   const info: DateInfo = {
     yyyy: date.getFullYear().toString(),
     yy: date.getFullYear().toString().slice(-2),
@@ -101,38 +102,26 @@ function format<T>(
     s: date.getSeconds().toString(),
     SSS: ("00" + date.getMilliseconds()).slice(-3),
   };
-  if (typeof fotmatter === "string") {
-    if (fotmatter === "datetime") {
+  if (typeof formatter === "string") {
+    if (formatter === "datetime") {
       return format(date, "yyyy-MM-dd HH:mm:ss");
-    } else if (fotmatter === "date") {
+    } else if (formatter === "date") {
       return format(date, "yyyy-MM-dd");
-    } else if (fotmatter === "time") {
+    } else if (formatter === "time") {
       return format(date, "HH:mm:ss");
     } else {
       return format(date, function (info) {
-        return fotmatter
-          .replace(/yyyy/g, info.yyyy)
-          .replace(/yy/g, info.yy)
-          .replace(/MM/g, info.MM)
-          .replace(/M/g, info.M)
-          .replace(/dd/g, info.dd)
-          .replace(/d/g, info.d)
-          .replace(/HH/g, info.HH)
-          .replace(/H/g, info.H)
-          .replace(/a/g, info.a)
-          .replace(/hh/g, info.hh)
-          .replace(/h/g, info.h)
-          .replace(/mm/g, info.mm)
-          .replace(/m/g, info.m)
-          .replace(/ss/g, info.ss)
-          .replace(/s/g, info.s)
-          .replace(/SSS/g, info.SSS);
+        let result: string = formatter;
+        for (let key in info) {
+          result = result.replace(new RegExp(key, "g"), info[key]);
+        }
+        return result;
       });
     }
-  } else if (typeof fotmatter === "function") {
-    return fotmatter(info);
+  } else if (typeof formatter === "function") {
+    return formatter(info);
   } else {
-    throw new Error("Invalid fotmatter");
+    throw new Error("Invalid formatter");
   }
 }
 
