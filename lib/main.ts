@@ -78,7 +78,7 @@ interface DateInfo {
  * console.log(format(date, "date"))        // 2023-12-12
  * console.log(format(date, "time"))        // 13:00:00
  * console.log(format(date, "yyyy/MM/dd"))  // 2023/12/12
- * console.log(format(date, dateInfo => dateInfo.SSS)   // 000
+ * console.log(format(date, dateInfo => dateInfo.SSS))   // 000
  */
 function format(
   date: Date,
