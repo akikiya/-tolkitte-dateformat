@@ -1,7 +1,7 @@
 {
   "name": "@tolkitte/dateformat",
   "description": "Date Formatter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -9,9 +9,9 @@
   ],
   "main": "./dist/formatDate.umd.cjs",
   "module": "./dist/formatDate.js",
-  "types": "./dist/main.d.ts",
+  "types": "./dist/types/main.d.ts",
   "exports": {
-    "types": "./dist/main.d.ts",
+    "types": "./dist/types/main.d.ts",
     "import": "./dist/formatDate.js",
     "require": "./dist/formatDate.umd.cjs"
   },
