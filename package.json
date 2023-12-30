@@ -1,0 +1,26 @@
+{
+  "name": "@tolkitte/dateformat",
+  "description": "Date Formatter",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/formatDate.umd.cjs",
+  "module": "./dist/formatDate.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    "types": "./dist/main.d.ts",
+    "import": "./dist/formatDate.js",
+    "require": "./dist/formatDate.umd.cjs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10"
+  }
+}
