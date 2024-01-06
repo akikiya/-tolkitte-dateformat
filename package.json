@@ -1,7 +1,7 @@
 {
   "name": "@tolkitte/dateformat",
   "description": "Date Formatter",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -18,7 +18,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc"
+    "build": "vite build && tsc",
+    "publish": "npm publish --registry=https://registry.npmjs.org"
   },
   "devDependencies": {
     "typescript": "^5.3.3",

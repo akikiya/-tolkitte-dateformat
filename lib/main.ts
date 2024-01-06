@@ -113,7 +113,7 @@ function format(
       return format(date, function (info) {
         let result: string = formatter;
         for (let key in info) {
-          result = result.replace(new RegExp(key, "g"), info[key]);
+          result = result.replace(new RegExp("\\b" + key + "\\b", "g"), info[key]);
         }
         return result;
       });
