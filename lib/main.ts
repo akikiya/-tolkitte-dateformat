@@ -83,6 +83,7 @@ function format(
   date: Date,
   formatter: string | ((dateInfo: DateInfo) => string)
 ): string {
+  if (!(date instanceof Date)) throw new TypeError("Expected a Date instance.");
   const info: DateInfo = {
     yyyy: date.getFullYear().toString(),
     yy: date.getFullYear().toString().slice(-2),
@@ -110,13 +111,11 @@ function format(
       case "time":
         return format(date, "HH:mm:ss");
       default:
-        return format(date, (info) => {
-          let result = formatter;
-          for (let key in info) {
-            result = result.replace(new RegExp("\\b" + key + "\\b", "g"), info[key]);
-          }
-          return result;
-        });
+        let result = formatter;
+        for (let key in info) {
+          result = result.replace(new RegExp("\\b" + key + "\\b", "g"), info[key]);
+        }
+        return result;
     }
   } else if (typeof formatter === "function") {
     return formatter(info);
