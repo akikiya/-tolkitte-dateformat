@@ -72,7 +72,6 @@ interface DateInfo {
  * @param date
  * @param formatter
  * @example
- *
  * const date = new Date() // Suppose it is 13:00:00.000 on December 12, 2023
  * console.log(format(date, "datetime"))    // 2023-12-12 13:00:00
  * console.log(format(date, "date"))        // 2023-12-12
@@ -103,25 +102,26 @@ function format(
     SSS: ("00" + date.getMilliseconds()).slice(-3),
   };
   if (typeof formatter === "string") {
-    if (formatter === "datetime") {
-      return format(date, "yyyy-MM-dd HH:mm:ss");
-    } else if (formatter === "date") {
-      return format(date, "yyyy-MM-dd");
-    } else if (formatter === "time") {
-      return format(date, "HH:mm:ss");
-    } else {
-      return format(date, function (info) {
-        let result: string = formatter;
-        for (let key in info) {
-          result = result.replace(new RegExp("\\b" + key + "\\b", "g"), info[key]);
-        }
-        return result;
-      });
+    switch (formatter) {
+      case "datetime":
+        return format(date, "yyyy-MM-dd HH:mm:ss");
+      case "date":
+        return format(date, "yyyy-MM-dd");
+      case "time":
+        return format(date, "HH:mm:ss");
+      default:
+        return format(date, (info) => {
+          let result = formatter;
+          for (let key in info) {
+            result = result.replace(new RegExp("\\b" + key + "\\b", "g"), info[key]);
+          }
+          return result;
+        });
     }
   } else if (typeof formatter === "function") {
     return formatter(info);
   } else {
-    throw new Error("Invalid formatter");
+    throw new TypeError("Invalid formatter");
   }
 }
 
