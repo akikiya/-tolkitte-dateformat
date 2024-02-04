@@ -1,5 +1,4 @@
 interface DateInfo {
-  [key: string]: string;
   /**
    * the year as "2023", "2024", etc
    */
@@ -79,11 +78,11 @@ interface DateInfo {
  * console.log(format(date, "yyyy/MM/dd"))  // 2023/12/12
  * console.log(format(date, dateInfo => dateInfo.SSS))   // 000
  */
-function format(
+export default function format(
   date: Date,
-  formatter: string | ((dateInfo: DateInfo) => string)
+  formatter: "datetime" | "date" | "time" | string | ((dateInfo: DateInfo) => string)
 ): string {
-  if (!(date instanceof Date)) throw new TypeError("Expected a Date instance.");
+  if (!(date instanceof Date)) throw new TypeError("Invaild date");
   const info: DateInfo = {
     yyyy: date.getFullYear().toString(),
     yy: date.getFullYear().toString().slice(-2),
@@ -102,26 +101,25 @@ function format(
     s: date.getSeconds().toString(),
     SSS: ("00" + date.getMilliseconds()).slice(-3),
   };
-  if (typeof formatter === "string") {
-    switch (formatter) {
-      case "datetime":
-        return format(date, "yyyy-MM-dd HH:mm:ss");
-      case "date":
-        return format(date, "yyyy-MM-dd");
-      case "time":
-        return format(date, "HH:mm:ss");
-      default:
-        let result = formatter;
-        for (let key in info) {
-          result = result.replace(new RegExp("\\b" + key + "\\b", "g"), info[key]);
-        }
-        return result;
-    }
-  } else if (typeof formatter === "function") {
-    return formatter(info);
-  } else {
-    throw new TypeError("Invalid formatter");
+  switch (typeof formatter) {
+    case "string":
+      switch (formatter) {
+        case "datetime":
+          return format(date, "yyyy-MM-dd HH:mm:ss");
+        case "date":
+          return format(date, "yyyy-MM-dd");
+        case "time":
+          return format(date, "HH:mm:ss");
+        default:
+          let result = formatter;
+          for (let key in info) {
+            result = result.replace(new RegExp("\\b" + key + "\\b", "g"), info[key]);
+          }
+          return result;
+      }
+    case "function":
+      return formatter(info);
+    default:
+      throw new TypeError("Invalid formatter");
   }
 }
-
-export default format;
